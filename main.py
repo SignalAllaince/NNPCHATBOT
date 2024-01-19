@@ -1,4 +1,3 @@
-import pymysql
 from flask import jsonify, redirect, url_for
 from flask import request, Flask
 from chatbot import generate_response
@@ -9,7 +8,6 @@ import json
 import asyncio
 from dotenv import load_dotenv
 import os
-import jwt
 from waitress import serve
 from hubspot import create_ticket, update_ticket, delete_ticket, get_ticket, get_all_tickets
 load_dotenv()
