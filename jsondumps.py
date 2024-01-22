@@ -34,7 +34,7 @@ def extract_json(input_text):
         return {}
 
 # Example usage:
-# input_text = "Great, I've created a ticket for you. Here are the details:\n\nContent: I need help with my account.\nPriority: Low"
+# input_text = "Great, I've created a ticket for you. Here are the details:\n\nContent: I need help with my account.\nSubject: account.\nPriority"
 # json_output = extract_json(input_text)
 # if json_output:
 #     print(json_output)

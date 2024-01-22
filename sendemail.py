@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def send_email(recipient_email, content, recipient_name):
+def send_email(sender_email, subject, content):
     # recipient_name = 'Uchenna Nnamani'
     # content = 'test - I need help with my account'
     # Azure AD application information
@@ -16,7 +16,7 @@ def send_email(recipient_email, content, recipient_name):
     client_secret = os.environ.get('CLIENT_SECRET') 
     resource = 'https://graph.microsoft.com'  # Microsoft Graph API
     # sender_email = 'helpdesk@nnpcgroup.com'
-    sender_email = 'unnamani@saconsulting.ai'
+    # sender_email = 'unnamani@saconsulting.ai'
     # Uchenna.Nnamani@nnpcgroup.com
     # Request an access token
     token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/token"
@@ -34,13 +34,13 @@ def send_email(recipient_email, content, recipient_name):
     # Example: Send an email using Microsoft Graph API
     graph_api_url = f'https://graph.microsoft.com/v1.0/users/{sender_email}/sendMail'
     # content = payload.get('Content', '')
-
+    recipient_email = 'nnamaniuchenna8@gmailcom'
     # Create the email message
     msg = MIMEMultipart()
     msg['Subject'] = f'Request for Ticket Escalation'
     msg['From'] = sender_email  # Replace with the sender's email address
     msg['To'] = recipient_email
-    body = f"Hello {recipient_name}, you have requested for this ticket to be escalated by the serice desk bot. Here are the details:\n\n" \
+    body = f"Hello, I have requested for this ticket to be escalated by the serice desk bot. Here are the details:\n\n" \
            f"{content}\n\nRegards,\nAServiceDeskBot"
     msg.attach(MIMEText(body, 'plain'))
 
@@ -69,10 +69,10 @@ def send_email(recipient_email, content, recipient_name):
 
     response = requests.post(graph_api_url, headers=headers, json=email_data)
     if response.status_code == 202:
-        print("Email sent successfully")
+        return "Email sent successfully"
     else:
-        print(f"Email could not be sent. Status Code: {response.status_code}")
-        print(response.text)
+        return f"Email could not be sent. Status Code: {response.status_code}", response.text
+        # print(response.text)
 
 # Call the function to send the email
-send_email('nnamaniuchenna8@gmail.com','test - I need help with my account', 'Uchenna Nnamani')
+# send_email('nnamaniuchenna8@gmail.com','test - I need help with my account', 'Uchenna Nnamani')

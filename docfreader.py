@@ -37,7 +37,7 @@ def intelligent_response(prompts):
         engine="servicedesk",
         messages=[
             {"role": "system", 
-            "content": "You help determine if a prompt you get concerns technical helpdesk issues or not. If it concerns technical helpdesk issues you will run the function search_document else you will tell the user something related to 'please could you provide a valid technical inquiry'"},
+            "content": "You help determine if a prompt you get concerns technical helpdesk issues or not. If it concerns technical helpdesk issues you will run the function search_document else you will tell the user something related to 'please could you provide a valid technical inquiry'."},
             {"role": "user", "content": prompts}
         ],
         temperature=0.7,
@@ -108,6 +108,6 @@ def finetune(prompt):
         message = response.choices[0].message['content'].strip()
         return message
     
-query = "how do i fix my keyboard buttons"
-intelligent_response(query)
+# query = "how do i fix my keyboard buttons"
+# intelligent_response(query)
 

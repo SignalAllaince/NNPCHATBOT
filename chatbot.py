@@ -1,4 +1,4 @@
-from flask import jsonify, Flask, redirect, url_for, session, request
+from flask import   Flask
 import openai
 from jsondumps import extract_json
 from docfreader import intelligent_response
@@ -51,8 +51,6 @@ conversation = [
 ]
 def generate_response(prompt):
     global conversation  # Access the global conversation variable
-    # content = f"You are a service desk assistant named Rukky, you always introduce yourself and greet the user at the beginning of the conversation like this - 'Hello {name}, my name is Rukky how might I assist you today?' The users name in the meeting you must mention is {name}. If you are asked about the solution to a technical problem with a computer, you should check if the solution is in your knowledge base but if it is does not solve user problems call the function 'is_solution_in_pdf' that checks available pdfs for solutions. If the problem is one that user cant solve after the help provvided ask them if they want to log it to service desk. If user agrees to log it into service desk call the function to create ticket in service with details of the problem previously mentioned in the conversation. After running this function end the conversation by saying 'Thank you for contacting the service desk, have a nice day'. If user says no just end the conversation by saying 'Thank you for contacting the service desk, have a nice day'"
-    # Add the new user's message to the conversation
     conversation.append({"role": "user", "content": prompt})
 
     # Generate a response using the conversation history52
@@ -128,51 +126,51 @@ def generate_response(prompt):
             )
             
             return function_response
-        elif function_name == "service_request":
-            # available_functions = {
-            #     "service_request": extract_json,
-            # }
-            # function_to_call = available_functions[function_name]
-            # function_args = json.loads(check_response["function_call"]["arguments"])
-            # function_response = function_to_call(
-            #     fullname= function_args.get(""),
-            # )
-            # conversation.append(
-            #     {
-            #         "role":"function",
-            #         "name": function_name,
-            #         "content": function_response,
-            #     }
-            # )
-            # # Extract relevant information from the function response
-            # available_times = json.loads(function_response)
+        # elif function_name == "service_request":
+        #     # available_functions = {
+        #     #     "service_request": extract_json,
+        #     # }
+        #     # function_to_call = available_functions[function_name]
+        #     # function_args = json.loads(check_response["function_call"]["arguments"])
+        #     # function_response = function_to_call(
+        #     #     fullname= function_args.get(""),
+        #     # )
+        #     # conversation.append(
+        #     #     {
+        #     #         "role":"function",
+        #     #         "name": function_name,
+        #     #         "content": function_response,
+        #     #     }
+        #     # )
+        #     # # Extract relevant information from the function response
+        #     # available_times = json.loads(function_response)
 
-            # assistant_message = {
-            # "role": "assistant",
-            # "content": f"I have the following times available for {function_args.get('fullname')} which are {available_times}"
-            # }
+        #     # assistant_message = {
+        #     # "role": "assistant",
+        #     # "content": f"I have the following times available for {function_args.get('fullname')} which are {available_times}"
+        #     # }
             
-            # # Append the assistant message to the conversation
-            # conversation.append(assistant_message)
-            # # assistant_response = response.choices[0].message['content'].strip() if response.choices else ""
-            # finetune =  intelligent_response(function_response)
-            return "module not available"
+        #     # # Append the assistant message to the conversation
+        #     # conversation.append(assistant_message)
+        #     # # assistant_response = response.choices[0].message['content'].strip() if response.choices else ""
+        #     # finetune =  intelligent_response(function_response)
+        #     return "module not available"
     else:
         assistant_response = response.choices[0].message['content'].strip() if response.choices else ""
         conversation.append({"role": "assistant", "content": assistant_response})
         return assistant_response
     
-@app.route('/openai_chat', methods=['POST'])
-def openai_chat():
-    try:
-        data = request.json
-        user_input = data["user"]
-        response = generate_response(user_input,"nnamaniuchenna8@gmail.com")
-        return jsonify({"response": response})
-    except Exception as e:
-        return jsonify({"error": str(e)})
+# @app.route('/openai_chat', methods=['POST'])
+# def openai_chat():
+#     try:
+#         data = request.json
+#         user_input = data["user"]
+#         response = generate_response(user_input,"nnamaniuchenna8@gmail.com")
+#         return jsonify({"response": response})
+#     except Exception as e:
+#         return jsonify({"error": str(e)})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
 
 
