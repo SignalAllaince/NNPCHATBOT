@@ -1,19 +1,44 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - Main
 
+pr:
+- '*'
+
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+- job: Build
+  displayName: 'Build Python Application'
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.9'  
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - script: |
+      python -m venv env
+      source env/bin/activate
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    displayName: 'Install Python Dependencies'
+
+  - script: |
+      python -m pytest
+    displayName: 'Run tests'
+
+  - script: |
+      python -m waitress --host=0.0.0.0 --port=5000 main:app
+    displayName: 'Start application'
+
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+    displayName: 'Archive Application'
+
+  - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    artifact: drop
+    displayName: 'Publish Artifact'
