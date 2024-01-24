@@ -1,42 +1,35 @@
 trigger:
 - Main
 
-pr:
-- '*'
-
 pool:
   vmImage: 'ubuntu-latest'
 
-jobs:
-- job: Build
-  displayName: 'Build Python Application'
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.9'  
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
 
-  - script: |
-      python -m venv env
-      source env/bin/activate
-      pip install --upgrade pip
-      pip install -r requirements.txt
-      pip install pytest
-      pip install waitress  # Install waitress explicitly
-    displayName: 'Install Python Dependencies'
+- script: |
+    python -m venv env
+    source env/bin/activate
+    pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
 
-  - script: |
-      waitress-serve --host=0.0.0.0 --port=5000 main:app
-    displayName: 'Start application'
+- script: |
+    python -m unittest discover tests
+  displayName: 'Run tests'
 
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)'
-      includeRootFolder: false
-      archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      replaceExistingArchive: true
-    displayName: 'Archive Application'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
 
-  - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    artifact: drop
-    displayName: 'Publish Artifact'
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    artifactName: 'drop'
+    publishLocation: 'container'
