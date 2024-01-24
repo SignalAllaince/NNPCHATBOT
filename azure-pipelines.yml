@@ -21,6 +21,7 @@ jobs:
       pip install --upgrade pip
       pip install -r requirements.txt
       pip install pytest  # Install pytest explicitly
+      pip install waitress  # Install waitress explicitly
     displayName: 'Install Python Dependencies'
 
   - script: |
