@@ -6,9 +6,9 @@ pool:
 
 strategy:
   matrix:
-    Python38: 
+    Python38:
       pythonVersion: '3.8'
-    Python39: 
+    Python39:
       pythonVersion: '3.9'
 
 steps:
@@ -24,14 +24,14 @@ steps:
     pip install --no-cache-dir -r requirements.txt
   displayName: 'Install dependencies'
 
-- task: ArchiveFiles@3
+- task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
     includeRootFolder: false
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
 
-- task: PublishBuildArtifacts@2
+- task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     artifactName: 'drop'
