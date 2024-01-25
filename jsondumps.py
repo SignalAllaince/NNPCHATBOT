@@ -14,7 +14,7 @@ def extract_json(input_text):
 
     # Extract information using regular expressions
     for key, pattern in patterns.items():
-        matches = re.findall(pattern, input_text, re.MULTILINE)
+        matches = re.findall(pattern, input_text, re.MULTILINE| re.IGNORECASE)
         if matches:
             # Use the last match as it's the most recent one
             value = matches[-1].strip()

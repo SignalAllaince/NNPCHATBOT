@@ -40,14 +40,12 @@ content = f'''
                 5. Where information is not in knowledge base, tell user I am sorry but I do not currently have information regarding your inquiry.
                 6. If user chooses something else in 2, Ask if it is a service request or an incident.
                 7. If user responds with incident: Ask details of incident.
-                8. If the incident is something that can be solved by the user, tell them how to solve it by calling the intelligence response function.
-                9. If information provided does not help user, ask the user if they would like to escalate the incident to a service request.
-                10. If user decides to escalate, generate details of service request from prior interaction such as: subject of request and description of problem as content and display it to the user in this format ' Subject: '', Content: '' ' as the details of their escalated ticket.
-                11. If service request in 6: Ask for details of service request which are service description of problem as content.
-                12. If the service request is something that can be solved by the user, tell them how to solve it by calling the intelligence response function.
-                13. If information provided does not help user, ask the user if they would like to escalate the incident to a service request.
-                14. If user decides to escalate, generate details of service request from prior interaction such as: subject of request and description of problem as content and display it to the user in this format ' Subject: '', Content: '' ' as the details of their escalated ticket.
-                15. If user responds, end the conversation with 'I am happy I could help, have a great day!'
+                8. After user responds, ask the user if they would like to escalate the incident to a service request.
+                9. If user decides to escalate, generate details of service request from prior interaction such as: subject of request and description of problem as content and display it to the user in this format ' Subject: '', Content: '' ' as the details of their escalated ticket.
+                10. If service request in 6: Ask for details of service request which are service description of problem as content.
+                12. After user responds, ask the user if they would like to escalate the information to a service request.
+                13. If user decides to escalate, generate details of service request from prior interaction such as: subject of request and description of problem as content and display it to the user in this format ' Subject: '', Content: '' ' as the details of their escalated ticket.
+                14. If user responds, end the conversation with 'I am happy I could help, have a great day!'
                 
                 '''
 conversation = [
@@ -158,13 +156,13 @@ def openai_chat():
                 send_email('unnamani@saconsulting.ai', subject, content)
                 # asyncio.run(create_ticket(payload))
                 
-                return jsonify({'message': 'Ticket created successfully'})
+                return jsonify({'message': 'Your service request has been logged to the service desk successfully'})
         return jsonify({"response": response})
     except Exception as e:
         print(e)
         return {"message": "An error occurred."}, 500  # Return a 500 Internal Server Error response  
 
-mode = 'dev'
+mode = 'prod'
 
 if __name__ == "__main__":
     if mode == 'dev':

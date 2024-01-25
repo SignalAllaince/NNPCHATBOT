@@ -34,7 +34,7 @@ def send_email(sender_email, subject, content):
     # Example: Send an email using Microsoft Graph API
     graph_api_url = f'https://graph.microsoft.com/v1.0/users/{sender_email}/sendMail'
     # content = payload.get('Content', '')
-    recipient_email = 'nnamaniuchenna8@gmailcom'
+    recipient_email = 'servicedesk@signalalliance.com'
     # Create the email message
     msg = MIMEMultipart()
     msg['Subject'] = f'Request for Ticket Escalation'
