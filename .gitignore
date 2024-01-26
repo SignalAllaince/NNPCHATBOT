@@ -110,3 +110,7 @@ flask_session/
 .env
 
 PdfFiles/
+
+azure-pipelines-1.yml
+azure-pipelines.yml
+```
