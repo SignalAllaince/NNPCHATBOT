@@ -5,7 +5,7 @@ from jsondumps import extract_json
 from sendemail import send_email
 import xml.etree.ElementTree as ET
 import json
-import asyncio
+# import asyncio
 from dotenv import load_dotenv
 import os
 from waitress import serve
