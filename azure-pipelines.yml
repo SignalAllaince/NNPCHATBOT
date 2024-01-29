@@ -1,5 +1,5 @@
-trigger: 
-- Main
+trigger:
+- main
 
 pool:
   vmImage: ubuntu-latest
@@ -20,10 +20,8 @@ stages:
         python -m venv antenv
         source antenv/bin/activate
         python -m pip install --upgrade pip
-        pip install setup
-        pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
-        pip install waitress
-      workingDirectory: $(Build.SourcesDirectory)
+        python -m pip install --upgrade setuptools
+        pip install --target="./antenv/lib/python3.9/site-packages" -r ./requirements.txt
       displayName: "Install requirements"
 
     - task: ArchiveFiles@2
@@ -39,10 +37,11 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifactName: 'drop'
         publishLocation: 'pipeline'
-        
-    - task: DownloadBuildArtifacts@1
+
+    - task: AzureWebApp@1
       inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'drop'
-        downloadPath: '$(System.ArtifactsDirectory)'
+        appType: webAppLinux
+        azureSubscription: 'Your Azure Subscription Name' # Replace with your subscription name
+        appName: 'Your App Service Name' # Replace with your app service name
+        package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+        startupCommand: 'antenv/bin/python -m waitress --host=0.0.0.0 --port=8000 main:app'
