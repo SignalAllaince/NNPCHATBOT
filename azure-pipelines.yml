@@ -37,11 +37,3 @@ stages:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifactName: 'drop'
         publishLocation: 'pipeline'
-
-    - task: AzureWebApp@1
-      inputs:
-        appType: webAppLinux
-        azureSubscription: 'Your Azure Subscription Name' # Replace with your subscription name
-        appName: 'Your App Service Name' # Replace with your app service name
-        package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-        startupCommand: 'antenv/bin/python -m waitress --host=0.0.0.0 --port=8000 main:app'
