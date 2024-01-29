@@ -23,7 +23,6 @@ stages:
         pip install setup
         pip install --target="./.python_packages/lib/site-packages" -r ./requirements.txt
         pip install waitress
-        pip install waitress-serve
       workingDirectory: $(Build.SourcesDirectory)
       displayName: "Install requirements"
 
