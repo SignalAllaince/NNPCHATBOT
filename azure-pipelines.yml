@@ -20,9 +20,9 @@ stages:
         python -m venv antenv
         source antenv/bin/activate
         python -m pip install --upgrade pip
-        python -m pip install --upgrade setuptools
-        pip install --target="./antenv/lib/python3.9/site-packages" -r ./requirements.txt
-      displayName: "Install requirements"
+        pip install --upgrade setuptools
+        pip install -r requirements.txt
+        /path/to/antenv/bin/pip install waitress
 
     - task: ArchiveFiles@2
       inputs:
