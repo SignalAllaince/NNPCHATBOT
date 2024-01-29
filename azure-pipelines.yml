@@ -22,7 +22,8 @@ stages:
         python -m pip install --upgrade pip
         pip install --upgrade setuptools
         pip install -r requirements.txt
-        /path/to/antenv/bin/pip install waitress
+        antenv/bin/pip install waitress  # Use the relative path
+      displayName: "Install requirements"
 
     - task: ArchiveFiles@2
       inputs:
