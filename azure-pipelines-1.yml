@@ -6,6 +6,8 @@
 trigger:
 - main
 
+# projectRoot: $(System.DefaultWorkingDirectory)
+
 pool:
   vmImage: ubuntu-latest
 
@@ -33,7 +35,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(projectRoot)'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory))'
         includeRootFolder: false
         archiveType: zip
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
