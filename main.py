@@ -153,7 +153,7 @@ def openai_chat():
                 "subject": subject,
                 }
                 print(payload)
-                send_email('unnamani@saconsulting.ai', subject, content)
+                send_email('Uchenna.Nnamani@nnpcgroup.com', subject, content)
                 # asyncio.run(create_ticket(payload))
                 
                 return jsonify({'message': 'Your service request has been logged to the service desk successfully'})

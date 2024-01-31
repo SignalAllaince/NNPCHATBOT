@@ -18,6 +18,7 @@ def send_email(sender_email, subject, content):
     # sender_email = 'helpdesk@nnpcgroup.com'
     # sender_email = 'unnamani@saconsulting.ai'
     # Uchenna.Nnamani@nnpcgroup.com
+    # Benjamin.Busari@nnpcgroup.com
     # Request an access token
     token_url = f"https://login.microsoftonline.com/{tenant_id}/oauth2/token"
     token_data = {
@@ -34,7 +35,7 @@ def send_email(sender_email, subject, content):
     # Example: Send an email using Microsoft Graph API
     graph_api_url = f'https://graph.microsoft.com/v1.0/users/{sender_email}/sendMail'
     # content = payload.get('Content', '')
-    recipient_email = 'servicedesk@signalalliance.com'
+    recipient_email = 'unnamani@saconsulting.ai'
     # Create the email message
     msg = MIMEMultipart()
     msg['Subject'] = f'Request for Ticket Escalation'
@@ -75,4 +76,4 @@ def send_email(sender_email, subject, content):
         # print(response.text)
 
 # Call the function to send the email
-# send_email('nnamaniuchenna8@gmail.com','test - I need help with my account', 'Uchenna Nnamani')
+# send_email('helpdesk@nnpcgroup.com','test - I need help with my account', 'Uchenna Nnamani')
