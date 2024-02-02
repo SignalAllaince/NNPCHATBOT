@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask import request, Flask
+from flask import Flask
 # from chatbot import generate_response
 from jsondumps import extract_json
 from sendemail import send_email
@@ -153,7 +153,7 @@ def openai_chat():
                 "subject": subject,
                 }
                 print(payload)
-                send_email('unnamani@saconsulting.ai', subject, content)
+                send_email('Uchenna.Nnamani@nnpcgroup.com', subject, content)
                 # asyncio.run(create_ticket(payload))
                 
                 return jsonify({'message': 'Your service request has been logged to the service desk successfully'})
@@ -164,7 +164,7 @@ def openai_chat():
 
 mode = 'prod'
 
-if __name__ == "__main__":
+if __name__ == "__app__":
     if mode == 'dev':
         app.run(host='0.0.0.0', debug=True)
     else:

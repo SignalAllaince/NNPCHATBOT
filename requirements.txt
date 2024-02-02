@@ -6,7 +6,7 @@ altair==4
 tiktoken==0.4.0
 Flask==3.0.0
 flask-session>=0.3.2,<0.5
-requests>=2,<3
+requests==2.31.0
 msal>=1.7,<2
 Flask-RESTful==0.3.10
 azure-ai-formrecognizer==3.3.2
