@@ -162,11 +162,13 @@ def openai_chat():
         print(e)
         return {"message": "An error occurred."}, 500  # Return a 500 Internal Server Error response  
 
-# mode = 'prod'
+mode = 'production'
 
 if __name__ == "__main__":
-    serve(app, host='0.0.0.0', threads = 2)
-    # if mode == 'dev':
-    #     app.run(host='0.0.0.0', debug=True)
-    # else:
-    #     serve(app, host='0.0.0.0', threads = 2)
+    app.run(host='0.0.0.0', debug=True)
+    if mode == 'dev':
+        app.run(host='0.0.0.0', debug=True)
+    elif mode == 'prod':
+        serve(app, host='0.0.0.0', threads = 2)
+    elif mode == 'production':
+        app.run(host='0.0.0.0', debug=True)
