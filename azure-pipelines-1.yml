@@ -22,15 +22,11 @@ stages:
       displayName: 'Use Python 3.9'
 
     - script: |
-        python -m venv antenv
-        source antenv/bin/activate
-        source antenv/bin/pip install -r requirements.txt
         python -m pip install --upgrade pip
         pip install --upgrade setuptools
         pip install waitress
         pip install gunicorn
         pip install -r requirements.txt
-        antenv/bin/pip install waitress  # Use the relative path
       displayName: "Install requirements"
 
     - task: ArchiveFiles@2
