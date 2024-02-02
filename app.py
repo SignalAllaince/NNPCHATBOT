@@ -13,6 +13,7 @@ import openai
 from docfreader import intelligent_response
 from hubspot import create_ticket
 load_dotenv()
+from flask import app
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY")
