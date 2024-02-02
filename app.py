@@ -1,5 +1,5 @@
 from flask import jsonify
-from flask import Flask
+from flask import request, Flask
 # from chatbot import generate_response
 from jsondumps import extract_json
 from sendemail import send_email
