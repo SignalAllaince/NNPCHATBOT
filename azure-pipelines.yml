@@ -19,8 +19,8 @@ variables:
   # Environment name
   environmentName: 'chatdesk'
 
-  # Environment name
-  Pipeline.Workspace: $(Build.ArtifactStagingDirectory)
+  # Workspace
+  workspace: $(Build.ArtifactStagingDirectory)
 
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
@@ -55,11 +55,11 @@ stages:
       inputs:
         SourceFolder: '$(projectRoot)'
         Contents: '**'  # Copy all files
-        TargetFolder: '$(Build.ArtifactStagingDirectory)/drop'
+        TargetFolder: '$(workspace)/drop'
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)/drop'
+        targetPath: '$(workspace)/drop'
         artifact: 'drop'
         publishLocation: 'pipeline'
 
@@ -88,4 +88,4 @@ stages:
               azureSubscription: $(azureServiceConnectionName)
               appName: $(webAppName)
               appType: webApp
-              package: '$(Pipeline.Workspace)/drop'
+              package: '$(workspace)/drop'
