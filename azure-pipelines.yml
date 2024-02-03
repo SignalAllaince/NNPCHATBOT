@@ -86,4 +86,4 @@ stages:
             inputs:
               azureSubscription: $(azureServiceConnectionName)
               appName: $(webAppName)
-              package: $(projectRoot)/$(Build.BuildId).zip
+              package: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
