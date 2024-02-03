@@ -8,16 +8,16 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureServiceConnectionId: '52b2f512-9f98-4099-8741-8efbad822623'
+  azureServiceConnectionName: 'chatt'
 
   # Web app name
-  webAppName: 'new-vms'
+  webAppName: 'chatdesk'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
   # Environment name
-  environmentName: 'new-vms'
+  environmentName: 'chatdesk'
 
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
@@ -80,8 +80,8 @@ stages:
             displayName: 'Use Python version'
 
           - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App : vms-new'
+            displayName: 'Deploy Azure Web App : chatdesk'
             inputs:
-              azureSubscription: $(azureServiceConnectionId)
+              azureSubscription: $(azureServiceConnectionName)
               appName: $(webAppName)
               package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
