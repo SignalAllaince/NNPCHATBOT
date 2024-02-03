@@ -1,6 +1,6 @@
 # Python to Linux Web App on Azure
 # Build your Python project and deploy it to Azure as a Linux Web App.
-# Change python version to one that's appropriate for your application.
+# Change python version to one thats appropriate for your application.
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
 trigger:
@@ -8,19 +8,16 @@ trigger:
 
 variables:
   # Azure Resource Manager connection created during pipeline creation
-  azureServiceConnectionName: 'chatt'
+  azureServiceConnectionId: '52b2f512-9f98-4099-8741-8efbad822623'
 
   # Web app name
-  webAppName: 'chatdesk'
+  webAppName: 'new-vms'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
   # Environment name
-  environmentName: 'chatdesk'
-
-  # Workspace
-  workspace: $(Build.ArtifactStagingDirectory)
+  environmentName: 'new-vms'
 
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
@@ -42,26 +39,26 @@ stages:
       displayName: 'Use Python $(pythonVersion)'
 
     - script: |
+        python -m venv antenv
+        source antenv/bin/activate
         python -m pip install --upgrade pip
-        pip install --upgrade pip
         pip install setup
-        pip install requests==2.31.0
         pip install -r requirements.txt
       workingDirectory: $(projectRoot)
       displayName: "Install requirements"
 
-    - task: CopyFiles@2
-      displayName: 'Copy files'
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
       inputs:
-        SourceFolder: '$(projectRoot)'
-        Contents: '**'  # Copy all files
-        TargetFolder: '$(workspace)/drop'
+        rootFolderOrFile: '$(projectRoot)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(workspace)/drop'
-        artifact: 'drop'
-        publishLocation: 'pipeline'
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: 'Upload package'
+      artifact: drop
 
 - stage: Deploy
   displayName: 'Deploy Web App'
@@ -83,9 +80,8 @@ stages:
             displayName: 'Use Python version'
 
           - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App :chatdesk'
+            displayName: 'Deploy Azure Web App : vms-new'
             inputs:
-              azureSubscription: $(azureServiceConnectionName)
+              azureSubscription: $(azureServiceConnectionId)
               appName: $(webAppName)
-              appType: webApp
-              package: '$(workspace)/drop'
+              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
