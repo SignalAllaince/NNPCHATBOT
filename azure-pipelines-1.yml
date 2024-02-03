@@ -22,6 +22,9 @@ stages:
       displayName: 'Use Python 3.9'
 
     - script: |
+        python -m venv antenv
+        source antenv/bin/activate
+        source antenv/bin/pip install -r requirements.txt
         python -m pip install --upgrade pip
         pip install --upgrade setuptools
         pip install waitress
