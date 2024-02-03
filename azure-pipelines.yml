@@ -1,40 +1,88 @@
+# Python to Linux Web App on Azure
+# Build your Python project and deploy it to Azure as a Linux Web App.
+# Change python version to one thats appropriate for your application.
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
+variables:
+  # Azure Resource Manager connection created during pipeline creation
+  azureServiceConnectionName: 'chatt'
+
+  # Web app name
+  webAppName: 'chatdesk'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+  # Environment name
+  environmentName: 'chatdesk'
+
+  # Project root folder. Point to the folder containing manage.py file.
+  projectRoot: $(System.DefaultWorkingDirectory)
+
+  # Python version: 3.9
+  pythonVersion: '3.9'
 
 stages:
-- stage: Deploy
-  displayName: 'Deploy Stage'
+- stage: Build
+  displayName: Build stage
   jobs:
-  - job: DeploymentJob
-    displayName: 'Deploy to Azure Web App'
+  - job: BuildJob
+    pool:
+      vmImage: $(vmImageName)
     steps:
     - task: UsePythonVersion@0
       inputs:
-        versionSpec: '3.8'
-      displayName: 'Use Python 3.8'
+        versionSpec: '$(pythonVersion)'
+      displayName: 'Use Python $(pythonVersion)'
 
     - script: |
         python -m venv antenv
         source antenv/bin/activate
         python -m pip install --upgrade pip
-        pip install --upgrade setuptools
+        pip install setup
         pip install -r requirements.txt
-        antenv/bin/pip install gunicorn  # Use the relative path
+      workingDirectory: $(projectRoot)
       displayName: "Install requirements"
 
     - task: ArchiveFiles@2
+      displayName: 'Archive files'
       inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        rootFolderOrFile: '$(projectRoot)'
         includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifactName: 'drop'
-        publishLocation: 'pipeline'
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      displayName: 'Upload package'
+      artifact: drop
+
+- stage: Deploy
+  displayName: 'Deploy Web App'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: DeploymentJob
+    pool:
+      vmImage: $(vmImageName)
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+            displayName: 'Use Python version'
+
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App :chatdesk'
+            inputs:
+              azureSubscription: $(azureServiceConnectionName)
+              appName: $(webAppName)
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
