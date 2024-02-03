@@ -1,14 +1,28 @@
-# Azure DevOps CI/CD pipeline YAML
+# Python to Linux Web App on Azure
+# Build your Python project and deploy it to Azure as a Linux Web App.
+# Change python version to one thats appropriate for your application.
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
 trigger:
 - main
 
 variables:
+  # Azure Resource Manager connection created during pipeline creation
   azureServiceConnectionName: 'chatt'
+
+  # Web app name
   webAppName: 'chatdesk'
+
+  # Agent VM image name
   vmImageName: 'ubuntu-latest'
+
+  # Environment name
   environmentName: 'chatdesk'
+
+  # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
+
+  # Python version: 3.9
   pythonVersion: '3.9'
 
 stages:
@@ -27,7 +41,7 @@ stages:
     - script: |
         python -m venv antenv
         source antenv/bin/activate
-        pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install setup
         pip install -r requirements.txt
       workingDirectory: $(projectRoot)
