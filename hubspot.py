@@ -1,4 +1,5 @@
 import aiohttp
+# import asyncio
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -31,32 +32,33 @@ async def get_all_tickets():
         async with session.get(f'{HUBSPOT_API_URL}') as response:
             return await response.json()
 
-@app.route('/create_ticket', methods=['POST'])
-def create_ticket_route():
-    data = request.get_json()
-    ticket = asyncio.run(create_ticket(data))
-    return jsonify(ticket)
+# @app.route('/create_ticket', methods=['POST'])
+# def create_ticket_route():
+#     data = request.get_json()
+#     ticket = asyncio.run(create_ticket(data))
+#     return jsonify(ticket)
 
-@app.route('/update_ticket/<int:ticket_id>', methods=['PUT'])
-def update_ticket_route(ticket_id):
-    data = request.get_json()
-    asyncio.run(update_ticket(ticket_id, data))
-    return jsonify({'message': 'Ticket updated successfully'})
+# @app.route('/update_ticket/<int:ticket_id>', methods=['PUT'])
+# def update_ticket_route(ticket_id):
+#     data = request.get_json()
+#     asyncio.run(update_ticket(ticket_id, data))
+#     return jsonify({'message': 'Ticket updated successfully'})
 
-@app.route('/delete_ticket/<int:ticket_id>', methods=['DELETE'])
-def delete_ticket_route(ticket_id):
-    asyncio.run(delete_ticket(ticket_id))
-    return jsonify({'message': 'Ticket deleted successfully'})
+# @app.route('/delete_ticket/<int:ticket_id>', methods=['DELETE'])
+# def delete_ticket_route(ticket_id):
+#     asyncio.run(delete_ticket(ticket_id))
+#     return jsonify({'message': 'Ticket deleted successfully'})
 
-@app.route('/view_ticket/<int:ticket_id>', methods=['GET'])
-def view_ticket_route(ticket_id):
-    ticket = asyncio.run(get_ticket(ticket_id))
-    return jsonify(ticket)
+# @app.route('/view_ticket/<int:ticket_id>', methods=['GET'])
+# def view_ticket_route(ticket_id):
+#     ticket = asyncio.run(get_ticket(ticket_id))
+#     return jsonify(ticket)
 
-@app.route('/view_all_tickets', methods=['GET'])
-def view_all_tickets_route():
-    tickets = asyncio.run(get_all_tickets())
-    return jsonify(tickets)
+# @app.route('/view_all_tickets', methods=['GET'])
+# def view_all_tickets_route():
+#     tickets = asyncio.run(get_all_tickets())
+#     return jsonify(tickets)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
