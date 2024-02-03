@@ -19,6 +19,9 @@ variables:
   # Environment name
   environmentName: 'chatdesk'
 
+  # Environment name
+  Pipeline.Workspace: $(Build.ArtifactStagingDirectory)
+
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
 
