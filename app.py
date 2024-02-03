@@ -1,17 +1,13 @@
-from flask import jsonify
-from flask import request, Flask
-# from chatbot import generate_response
+from flask import Flask, jsonify, request
 from jsondumps import extract_json
 from sendemail import send_email
 import xml.etree.ElementTree as ET
 import json
-# import asyncio
 from dotenv import load_dotenv
 import os
 from waitress import serve
 import openai
 from docfreader import intelligent_response
-from hubspot import create_ticket
 load_dotenv()
 
 app = Flask(__name__)
