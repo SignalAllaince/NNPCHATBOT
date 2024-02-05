@@ -78,4 +78,4 @@ stages:
               appType: webApp
               package: $(Pipeline.Workspace)/drop/Application$(Build.BuildId).zip
               deploymentMethod: zipDeploy
-              startUpCommand: 'gunicorn --bind=0.0.0.0 --workers=4 startup:app'
+              startUpCommand: 'gunicorn --bind=0.0.0.0 --workers=4 main:app'
