@@ -40,9 +40,17 @@ stages:
         replaceExistingArchive: true
         verbose: # (no value); this input is optional
 
+    - script: |
+        ls -R $(Build.ArtifactStagingDirectory)
+      displayName: 'List artifact contents before publishing'
+
     - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
       displayName: 'Upload package'
       artifact: drop
+
+    - script: |
+        ls -R $(Build.ArtifactStagingDirectory)
+      displayName: 'List artifact contents after publishing'
 
 - stage: Deploy
   displayName: 'Deploy Web App'
